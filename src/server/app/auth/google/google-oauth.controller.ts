@@ -1,9 +1,9 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { GoogleOauthGuard } from './google-oauth.guard';
 import { JwtAuthService } from '../jwt/jwt-auth.service';
+import { GoogleOauthGuard } from './google-oauth.guard';
 
-@Controller('auth/google')
+@Controller('auth')
 export class GoogleOauthController {
   constructor(private jwtAuthService: JwtAuthService) {}
 

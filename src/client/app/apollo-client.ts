@@ -1,7 +1,7 @@
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 import { Request } from 'express';
+import { MapType, Query, ValueTypes, Zeus } from './types/graphql-zeus';
 
-import { Zeus, MapType, Query, ValueTypes } from './types/graphql-zeus';
 
 const client = new ApolloClient({
   // TODO: make this configurable

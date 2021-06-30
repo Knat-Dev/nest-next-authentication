@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import createServer from 'next';
 import { NextServer } from 'next/dist/server/next';
+import { IncomingMessage, ServerResponse } from 'node:http';
 
 @Injectable()
 export class ViewService implements OnModuleInit {
@@ -23,5 +24,19 @@ export class ViewService implements OnModuleInit {
 
   getNextServer(): NextServer {
     return this.server;
+  }
+
+  async handler(
+    req: IncomingMessage,
+    res: ServerResponse,
+    data?: any,
+    url?: string,
+  ) {
+    await this.getNextServer().render(
+      req,
+      res,
+      url || req.url,
+      Object.assign({}, data),
+    );
   }
 }

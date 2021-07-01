@@ -1,19 +1,29 @@
+import { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
-import { NextPage } from 'next';
-import { Request } from 'express';
+import { User } from '../../server/common/types/user';
 
-export async function getServerSideProps({ req }) {
-  return {
-    props: { user: (req as Request).user },
-  };
-}
-
-type Props = ExtractPromiseType<ReturnType<typeof getServerSideProps>>;
-
-const Profile: NextPage<Props['props']> = (props) => {
-  const { user } = props;
-
-  return <h1>Profile {JSON.stringify(user)}</h1>;
+const Profile: NextPage<{ user: string }> = ({ user }) => {
+  const currUser = JSON.parse(user) as User;
+  return (
+    <div>
+      <h1>{currUser.id}</h1>
+      <h1>{currUser.provider}</h1>
+      <h1>{currUser.username}</h1>
+    </div>
+  );
 };
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const user = context.query.user;
+  return {
+    props: {
+      user: JSON.stringify(user),
+    },
+  };
+};
+
+// Profile.getInitialProps = ({ query }): { user: User } => {
+//   return { user: query.user as unknown as User};
+// };
 
 export default Profile;

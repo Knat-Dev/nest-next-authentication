@@ -1,19 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RouterModule, Routes } from 'nest-router';
 import { ConsoleModule } from 'nestjs-console';
-import { join } from 'path';
-import { SeedService } from 'src/server/console/seed.service';
 import { ViewModule } from '../view/view.module';
 import { ApiModule } from './api/api.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { GoogleOauthModule } from './auth/google/google-oauth.module';
-import { OrdersModule } from './orders/orders.module';
-import { ThingsModule } from './things/things.module';
 import { UsersModule } from './users/users.module';
 
 const routes: Routes = [
@@ -46,9 +41,6 @@ const routes: Routes = [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-    }),
     TypeOrmModule.forRootAsync({
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
@@ -66,11 +58,9 @@ const routes: Routes = [
     ConsoleModule,
     AuthModule,
     UsersModule,
-    ThingsModule,
-    OrdersModule,
     ViewModule, // order matters, GET '/*' should be last, so it renders next.js not found page
   ],
-  providers: [SeedService, AppService],
+  providers: [ AppService],
   controllers: [AppController],
 })
 export class AppModule {}

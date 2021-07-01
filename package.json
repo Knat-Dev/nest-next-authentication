@@ -21,15 +21,13 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json --setupFiles dotenv-flow/config",
     "console": "ts-node -r tsconfig-paths/register src/server/console.ts",
-    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "client:generate:schema": "zeus src/schema.gql src/client/app/types --ts"
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
     "@apollo/client": "^3.3.16",
     "@nestjs/common": "^7.5.1",
     "@nestjs/config": "^0.6.3",
     "@nestjs/core": "^7.5.1",
-    "@nestjs/graphql": "^7.9.8",
     "@nestjs/jwt": "^7.2.0",
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.5.1",
@@ -39,8 +37,6 @@
     "commander": "^7.0.0",
     "cookie-parser": "^1.4.5",
     "google-auth-library": "^7.0.4",
-    "graphql": "^15.5.0",
-    "graphql-tools": "^7.0.3",
     "nest-router": "^1.0.9",
     "nestjs-console": "^4.0.0",
     "next": "^10.1.3",
@@ -79,7 +75,6 @@
     "eslint": "^7.12.1",
     "faker": "^5.4.0",
     "fishery": "^1.2.0",
-    "graphql-zeus": "2.8.6",
     "jest": "^26.6.3",
     "prettier": "^2.1.2",
     "supertest": "^6.0.0",

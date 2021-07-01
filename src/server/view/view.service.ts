@@ -3,12 +3,16 @@ import { ConfigService } from '@nestjs/config';
 import createServer from 'next';
 import { NextServer } from 'next/dist/server/next';
 import { IncomingMessage, ServerResponse } from 'node:http';
+import { UsersService } from '../app/users/users.service';
 
 @Injectable()
 export class ViewService implements OnModuleInit {
   private server: NextServer;
 
-  constructor(private configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    private usersService: UsersService,
+  ) {}
 
   async onModuleInit(): Promise<void> {
     try {
@@ -29,14 +33,21 @@ export class ViewService implements OnModuleInit {
   async handler(
     req: IncomingMessage,
     res: ServerResponse,
-    data?: any,
-    url?: string,
+    options?: {
+      data?: any;
+      url?: string;
+    },
   ) {
     await this.getNextServer().render(
       req,
       res,
-      url || req.url,
-      Object.assign({}, data),
+      options?.url || req.url,
+      Object.assign({}, options?.data),
     );
+  }
+
+  async getUser(userId: number) {
+    const user = await this.usersService.findOne(userId);
+    return user;
   }
 }

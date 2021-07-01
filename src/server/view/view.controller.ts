@@ -7,37 +7,56 @@ import {
   UseGuards
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { GetUser } from '../app/auth/get-user.decorator';
 import { JwtAuthGuard } from '../app/auth/jwt/jwt-auth.guard';
+import { User } from '../app/users/user.entity';
+import { PublicGuard } from './public.guard';
 import { ViewAuthFilter } from './view.auth.filter';
 import { ViewService } from './view.service';
+import { ViewUnauthFilter } from './view.unauth.filter';
 
 @Controller()
 export class ViewController {
   constructor(private viewService: ViewService) {}
 
   @Get('/')
-  public async showHome(@Req() req: Request, @Res() res: Response) {
+  public async renderHomePage(@Req() req: Request, @Res() res: Response) {
     // able to fetch user relevant data on protected routes
     const serverSideProps = { dataFromController: '1234' };
 
-    await this.viewService.handler(
-      req,
-      res,
-      serverSideProps,
-      '/home', // next.js page to render
-    );
+    await this.viewService.handler(req, res, {
+      data: serverSideProps,
+      url: '/home', // next.js page to render
+    });
+  }
+
+  @UseGuards(PublicGuard)
+  @UseFilters(ViewUnauthFilter)
+  @Get('login')
+  public async renderLoginPage(@Req() req: Request, @Res() res: Response) {
+    await this.viewService.handler(req, res);
   }
 
   @UseGuards(JwtAuthGuard)
   @UseFilters(ViewAuthFilter)
   @Get('profile')
-  public async showProfile(@Req() req: Request, @Res() res: Response) {
-    await this.viewService.handler(req, res);
+  public async renderProfilePage(
+    @Req() req: Request,
+    @Res() res: Response,
+    @GetUser() { id }: User,
+  ) {
+    const user = await this.viewService.getUser(id);
+    const serverSideProps = { user };
+
+    await this.viewService.handler(req, res, {
+      data: serverSideProps,
+    });
   }
 
   @UseGuards(JwtAuthGuard)
+  @UseFilters(ViewAuthFilter)
   @Get('orders')
-  public async indexOrders(@Req() req: Request, @Res() res: Response) {
+  public async renderOrdersPage(@Req() req: Request, @Res() res: Response) {
     console.log(req.user);
 
     await this.viewService.handler(req, res);

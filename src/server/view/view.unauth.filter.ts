@@ -2,18 +2,18 @@ import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
-  HttpException,
-  UnauthorizedException
+  ForbiddenException,
+  HttpException
 } from '@nestjs/common';
 import { Response } from 'express';
 
-@Catch(UnauthorizedException)
-export class ViewAuthFilter implements ExceptionFilter {
+@Catch(ForbiddenException)
+export class ViewUnauthFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
 
-    response.status(status).redirect('/login');
+    response.status(status).redirect('/');
   }
 }

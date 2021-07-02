@@ -1,12 +1,13 @@
 import {
   Controller,
   Get,
+  Next,
   Req,
   Res,
   UseFilters,
   UseGuards
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { JwtAuthGuard } from '../app/auth/jwt/jwt-auth.guard';
 import { UsersService } from '../app/users/users.service';
 import { PublicGuard } from './public.guard';
@@ -21,14 +22,14 @@ export class ViewController {
     private usersService: UsersService,
   ) {}
 
-  @Get('/')
+  @Get('/app')
   public async renderHomePage(@Req() req: Request, @Res() res: Response) {
     // able to fetch user relevant data on protected routes
     const serverSideProps = { dataFromController: '1234' };
 
     await this.viewService.handler(req, res, {
       data: serverSideProps,
-      url: '/home', // next.js page to render
+      url: '/app', // next.js page to render
     });
   }
 
@@ -46,13 +47,39 @@ export class ViewController {
     await this.viewService.handler(req, res);
   }
 
-  @Get('_next*')
+  @Get('_*')
   public async assets(@Req() req: Request, @Res() res: Response) {
     await this.viewService.handler(req, res);
   }
 
-  @Get('*')
-  public async notFound(@Req() req: Request, @Res() res: Response) {
+  // redirect / to /app for signed in users
+  @UseGuards(JwtAuthGuard)
+  @UseFilters(ViewAuthFilter)
+  @Get('/')
+  public async indexRedirect(@Req() req: Request, @Res() res: Response) {
+    await res.redirect('/app');
+  }
+
+  // redirect to /login for unauthorized users
+  @UseGuards(PublicGuard)
+  @UseFilters(ViewUnauthFilter)
+  @Get('/')
+  public async indexRedirectUnauth(@Req() req: Request, @Res() res: Response) {
+    await res.redirect('/login');
+  }
+
+  // // serve everything that's not api or public directory here through next.js
+  // @Get('//((?!/favicon.ico).)*/')
+  // public async notFound(@Req() req: Request, @Res() res: Response) {
+  //   console.log('Hello');
+  //   await this.viewService.handler(req, res);
+  // }
+
+  // @UseGuards(FaviconGuard)
+  @Get('/*')
+  public async notFound2(@Req() req: Request, @Res() res: Response,@Next() next:NextFunction) {
+    if(req.path !== '/favicon.ico')
     await this.viewService.handler(req, res);
+    else next()
   }
 }

@@ -1,28 +1,29 @@
-import { NextPage } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '../app/slices/authSlice';
+import { User } from '../../server/common/types/user';
+import { wrapper } from '../app/store';
 import { Layout } from '../components';
 
-const Home: NextPage<{ data: string }> = (props) => {
-  const user = useSelector(selectCurrentUser);
-
-  return <Layout user={user}>hi, this is the home page</Layout>;
+const Home: NextPage<{ user: User }> = ({ user }) => {
+  return <Layout pageTitle="Home" user={user}>hi, this is the home page</Layout>;
 };
 
-// export const getStaticProps: GetStaticProps = async (context) => {
-//   console.log(context)
-//   return {
-//     props: { data: JSON.stringify({ message: 'hello world' }) },
-//   };
-// };
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
+  (state) => async (context) => {
+    const user = state.getState().auth.user;
 
-Home.getInitialProps = ({ query }) => {
-  return {
-    data: `some initial props including query params and controller data: ${JSON.stringify(
-      query,
-    )}`,
-  };
-};
+    if (!state.getState().auth.user)
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    else
+      return {
+        props: { user },
+      };
+  },
+);
 
 export default Home;

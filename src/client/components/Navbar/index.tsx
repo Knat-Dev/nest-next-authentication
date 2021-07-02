@@ -24,62 +24,65 @@ export const Navbar: FC<Props> = ({ user }) => {
   };
 
   return (
-    <Flex color="white" bg="purple.700" h="48px" p={4} align="center">
-      <Container>
-        <Flex mx="auto" w="1000px" justify="space-between">
-          <NextLink href="/app">App Name</NextLink>
-          <Box>
-            {user ? (
-              <Flex gridGap={2}>
-                <NextLink href="/profile">
-                  <a>
-                    <Tooltip
-                      label="User Profile"
-                      background="purple.800"
-                      borderRadius={0}
-                      borderTop="4px solid"
-                      borderTopColor="purple.600"
-                    >
-                      <IconButton
-                        p={0}
-                        minW="32px"
-                        w="32px"
-                        h="32px"
-                        borderRadius="50%"
-                        background="purple.700"
-                        _hover={{ color: 'purple.700', background: 'white' }}
-                        aria-label="user-profile"
-                        icon={<RiProfileLine />}
-                      />
-                    </Tooltip>
-                  </a>
+    <>
+      
+      <Flex color="white" bg="purple.700" h="48px" p={4} align="center">
+        <Container>
+          <Flex mx="auto" w="1000px" justify="space-between">
+            <NextLink href="/app">App Name</NextLink>
+            <Box>
+              {user ? (
+                <Flex gridGap={2}>
+                  <NextLink href="/profile">
+                    <a>
+                      <Tooltip
+                        label="User Profile"
+                        background="purple.800"
+                        borderRadius={0}
+                        borderTop="4px solid"
+                        borderTopColor="purple.600"
+                      >
+                        <IconButton
+                          p={0}
+                          minW="32px"
+                          w="32px"
+                          h="32px"
+                          borderRadius="50%"
+                          background="purple.700"
+                          _hover={{ color: 'purple.700', background: 'white' }}
+                          aria-label="user-profile"
+                          icon={<RiProfileLine />}
+                        />
+                      </Tooltip>
+                    </a>
+                  </NextLink>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    background="purple.700"
+                    _hover={{ color: 'purple.700', background: 'white' }}
+                    onClick={handleLogout}
+                    isLoading={isLoggingOut}
+                  >
+                    Logout
+                  </Button>
+                </Flex>
+              ) : (
+                <NextLink href="/login">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    background="purple.700"
+                    _hover={{ color: 'purple.700', background: 'white' }}
+                  >
+                    Login
+                  </Button>
                 </NextLink>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  background="purple.700"
-                  _hover={{ color: 'purple.700', background: 'white' }}
-                  onClick={handleLogout}
-                  isLoading={isLoggingOut}
-                >
-                  Logout
-                </Button>
-              </Flex>
-            ) : (
-              <NextLink href="/login">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  background="purple.700"
-                  _hover={{ color: 'purple.700', background: 'white' }}
-                >
-                  Login
-                </Button>
-              </NextLink>
-            )}
-          </Box>
-        </Flex>
-      </Container>
-    </Flex>
+              )}
+            </Box>
+          </Flex>
+        </Container>
+      </Flex>
+    </>
   );
 };

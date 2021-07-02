@@ -12,7 +12,9 @@ export class ViewService implements OnModuleInit {
   constructor(
     private configService: ConfigService,
     private usersService: UsersService,
-  ) {}
+  ) {
+    console.log(this.configService.get<string>('NODE_ENV'));
+  }
 
   async onModuleInit(): Promise<void> {
     try {

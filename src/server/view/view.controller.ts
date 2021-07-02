@@ -68,18 +68,9 @@ export class ViewController {
     await res.redirect('/login');
   }
 
-  // // serve everything that's not api or public directory here through next.js
-  // @Get('//((?!/favicon.ico).)*/')
-  // public async notFound(@Req() req: Request, @Res() res: Response) {
-  //   console.log('Hello');
-  //   await this.viewService.handler(req, res);
-  // }
-
-  // @UseGuards(FaviconGuard)
   @Get('/*')
-  public async notFound2(@Req() req: Request, @Res() res: Response,@Next() next:NextFunction) {
-    if(req.path !== '/favicon.ico')
-    await this.viewService.handler(req, res);
-    else next()
+  public async notFound(@Req() req: Request, @Res() res: Response,@Next() next:NextFunction) {
+    if (req.path === '/favicon.ico') next();
+    else await this.viewService.handler(req, res);
   }
 }

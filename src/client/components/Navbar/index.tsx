@@ -1,10 +1,13 @@
-import { Box, Button, Flex } from '@chakra-ui/react';
+import { Box, Button, Flex, IconButton, Tooltip } from '@chakra-ui/react';
 import { useRouter } from 'next/dist/client/router';
+import NextLink from 'next/link';
 import React, { FC, useState } from 'react';
+import { RiProfileLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { User } from '../../../server/common/types/user';
 import { logout } from '../../app/slices/authSlice';
 import { AppDispatch } from '../../app/store';
+import { Container } from '../Container';
 
 interface Props {
   user: User | null;
@@ -21,49 +24,62 @@ export const Navbar: FC<Props> = ({ user }) => {
   };
 
   return (
-    <Flex color="white" bg="purple.700" h="48px" p={4}>
-      <Flex
-        mx="auto"
-        w="100%"
-        maxW="1000px"
-        align="center"
-        justify="space-between"
-      >
-        <Box>App Name</Box>
-        <Box>
-          {user ? (
-            <Button
-              size="sm"
-              variant="outline"
-              background="purple.700"
-              _hover={{ color: 'purple.700', background: 'white' }}
-              onClick={handleLogout}
-              isLoading={isLoggingOut}
-            >
-              Logout
-            </Button>
-          ) : (
-            <Flex gridGap={2}>
-              <Button
-                size="sm"
-                variant="outline"
-                background="purple.700"
-                _hover={{ color: 'purple.700', background: 'white' }}
-              >
-                Register
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                background="purple.700"
-                _hover={{ color: 'purple.700', background: 'white' }}
-              >
-                Login
-              </Button>
-            </Flex>
-          )}
-        </Box>
-      </Flex>
+    <Flex color="white" bg="purple.700" h="48px" p={4} align="center">
+      <Container>
+        <Flex mx="auto" w="1000px" justify="space-between">
+          <NextLink href="/app">App Name</NextLink>
+          <Box>
+            {user ? (
+              <Flex gridGap={2}>
+                <NextLink href="/profile">
+                  <a>
+                    <Tooltip
+                      label="User Profile"
+                      background="purple.800"
+                      borderRadius={0}
+                      borderTop="4px solid"
+                      borderTopColor="purple.600"
+                    >
+                      <IconButton
+                        p={0}
+                        minW="32px"
+                        w="32px"
+                        h="32px"
+                        borderRadius="50%"
+                        background="purple.700"
+                        _hover={{ color: 'purple.700', background: 'white' }}
+                        aria-label="user-profile"
+                        icon={<RiProfileLine />}
+                      />
+                    </Tooltip>
+                  </a>
+                </NextLink>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  background="purple.700"
+                  _hover={{ color: 'purple.700', background: 'white' }}
+                  onClick={handleLogout}
+                  isLoading={isLoggingOut}
+                >
+                  Logout
+                </Button>
+              </Flex>
+            ) : (
+              <NextLink href="/login">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  background="purple.700"
+                  _hover={{ color: 'purple.700', background: 'white' }}
+                >
+                  Login
+                </Button>
+              </NextLink>
+            )}
+          </Box>
+        </Flex>
+      </Container>
     </Flex>
   );
 };

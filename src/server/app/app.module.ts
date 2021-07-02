@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RouterModule, Routes } from 'nest-router';
 import { ConsoleModule } from 'nestjs-console';
-import { ViewModule } from '../view/view.module';
+import { join } from 'path';
 import { ApiModule } from './api/api.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,11 +13,11 @@ import { GoogleOauthModule } from './auth/google/google-oauth.module';
 import { UsersModule } from './users/users.module';
 
 const routes: Routes = [
-  {
-    // Next.JS SSR
-    path: '',
-    module: ViewModule,
-  },
+  // {
+  //   // Next.JS SSR
+  //   path: '',
+  //   module: ViewModule,
+  // },
   {
     // RESTful API
     path: '/api/v1',
@@ -27,16 +28,13 @@ const routes: Routes = [
       { path: '/google', module: GoogleOauthModule },
     ],
   },
-
-  // {
-  //   // Next.JS SSR
-  //   path: '/api/auth',
-  //   module: NextAuthModule,
-  // },
 ];
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
     RouterModule.forRoutes(routes),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -58,9 +56,9 @@ const routes: Routes = [
     ConsoleModule,
     AuthModule,
     UsersModule,
-    ViewModule, // order matters, GET '/*' should be last, so it renders next.js not found page
+    // ViewModule, // order matters, GET '/*' should be last, so it renders next.js not found page
   ],
-  providers: [ AppService],
+  providers: [AppService],
   controllers: [AppController],
 })
 export class AppModule {}

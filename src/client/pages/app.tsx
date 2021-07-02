@@ -1,15 +1,13 @@
 import { NextPage } from 'next';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../app/slices/authSlice';
+import { Layout } from '../components';
 
 const Home: NextPage<{ data: string }> = (props) => {
-  const { data } = props;
+  const user = useSelector(selectCurrentUser);
 
-  return (
-    <div>
-      <h1>Hello from NextJS! - Home</h1>
-      {data}
-    </div>
-  );
+  return <Layout user={user}>hi, this is the home page</Layout>;
 };
 
 // export const getStaticProps: GetStaticProps = async (context) => {

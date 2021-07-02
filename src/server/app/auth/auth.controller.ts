@@ -23,7 +23,6 @@ export class AuthController {
   @Post('/logout')
   logout(@Res() res: Response) {
     res.cookie('jwt', '');
-
-    return res.redirect('/');
+    return res.redirect("/login");
   }
 }

@@ -18,6 +18,7 @@ export const fetchMe = createAsyncThunk(
   },
 );
 
+// logout requires a redirect, hence the depended router
 export const logout = createAsyncThunk(
   'auth/logout',
   async ({ router }: { router: NextRouter }) => {

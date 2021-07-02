@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import createServer from 'next';
 import { NextServer } from 'next/dist/server/next';
 import { IncomingMessage, ServerResponse } from 'node:http';
-import { UsersService } from '../app/users/users.service';
 
 @Injectable()
 export class ViewService implements OnModuleInit {
@@ -11,7 +10,6 @@ export class ViewService implements OnModuleInit {
 
   constructor(
     private configService: ConfigService,
-    private usersService: UsersService,
   ) {
     console.log(this.configService.get<string>('NODE_ENV'));
   }

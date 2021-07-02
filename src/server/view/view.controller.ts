@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import { JwtAuthGuard } from '../app/auth/jwt/jwt-auth.guard';
-import { UsersService } from '../app/users/users.service';
 import { PublicGuard } from './public.guard';
 import { ViewAuthFilter } from './view.auth.filter';
 import { ViewService } from './view.service';
@@ -19,7 +18,6 @@ import { ViewUnauthFilter } from './view.unauth.filter';
 export class ViewController {
   constructor(
     private viewService: ViewService,
-    private usersService: UsersService,
   ) {}
 
   @UseGuards(JwtAuthGuard)

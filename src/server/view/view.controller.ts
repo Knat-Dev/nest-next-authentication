@@ -22,6 +22,8 @@ export class ViewController {
     private usersService: UsersService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
+  @UseFilters(ViewAuthFilter)
   @Get('/app')
   public async renderHomePage(@Req() req: Request, @Res() res: Response) {
     // able to fetch user relevant data on protected routes
@@ -69,7 +71,11 @@ export class ViewController {
   }
 
   @Get('/*')
-  public async notFound(@Req() req: Request, @Res() res: Response,@Next() next:NextFunction) {
+  public async notFound(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Next() next: NextFunction,
+  ) {
     if (req.path === '/favicon.ico') next();
     else await this.viewService.handler(req, res);
   }

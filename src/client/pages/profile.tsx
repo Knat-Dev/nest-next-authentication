@@ -1,29 +1,19 @@
-import { GetServerSideProps, NextPage } from 'next';
+import { NextPage } from 'next';
 import React from 'react';
-import { User } from '../../server/common/types/user';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../app/slices/authSlice';
+import { Layout } from '../components/';
 
-const Profile: NextPage<{ user: string }> = ({ user }) => {
-  const currUser = JSON.parse(user) as User;
+const Profile: NextPage = () => {
+  const user = useSelector(selectCurrentUser);
+
   return (
-    <div>
-      <h1>{currUser.id}</h1>
-      <h1>{currUser.provider}</h1>
-      <h1>{currUser.username}</h1>
-    </div>
+    <Layout user={user}>
+      <h1>{user.id}</h1>
+      <h1>{user.provider}</h1>
+      <h1>{user.username}</h1>
+    </Layout>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const user = context.query.user;
-  return {
-    props: {
-      user: JSON.stringify(user),
-    },
-  };
-};
-
-// Profile.getInitialProps = ({ query }): { user: User } => {
-//   return { user: query.user as unknown as User};
-// };
 
 export default Profile;

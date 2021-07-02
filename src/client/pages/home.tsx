@@ -12,6 +12,13 @@ const Home: NextPage<{ data: string }> = (props) => {
   );
 };
 
+// export const getStaticProps: GetStaticProps = async (context) => {
+//   console.log(context)
+//   return {
+//     props: { data: JSON.stringify({ message: 'hello world' }) },
+//   };
+// };
+
 Home.getInitialProps = ({ query }) => {
   return {
     data: `some initial props including query params and controller data: ${JSON.stringify(

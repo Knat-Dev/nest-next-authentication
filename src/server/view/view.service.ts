@@ -46,8 +46,4 @@ export class ViewService implements OnModuleInit {
     );
   }
 
-  async getUser(userId: number) {
-    const user = await this.usersService.findOne(userId);
-    return user;
-  }
 }

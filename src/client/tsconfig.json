@@ -23,7 +23,8 @@
     "next.config.js",
     "app",
     "pages",
-    "../server/common"
+    "components",
+    "../server/common",
   ],
   "exclude": [
     "node_modules"

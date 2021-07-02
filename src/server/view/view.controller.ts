@@ -7,9 +7,8 @@ import {
   UseGuards
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { GetUser } from '../app/auth/get-user.decorator';
 import { JwtAuthGuard } from '../app/auth/jwt/jwt-auth.guard';
-import { User } from '../app/users/user.entity';
+import { UsersService } from '../app/users/users.service';
 import { PublicGuard } from './public.guard';
 import { ViewAuthFilter } from './view.auth.filter';
 import { ViewService } from './view.service';
@@ -17,7 +16,10 @@ import { ViewUnauthFilter } from './view.unauth.filter';
 
 @Controller()
 export class ViewController {
-  constructor(private viewService: ViewService) {}
+  constructor(
+    private viewService: ViewService,
+    private usersService: UsersService,
+  ) {}
 
   @Get('/')
   public async renderHomePage(@Req() req: Request, @Res() res: Response) {
@@ -40,25 +42,7 @@ export class ViewController {
   @UseGuards(JwtAuthGuard)
   @UseFilters(ViewAuthFilter)
   @Get('profile')
-  public async renderProfilePage(
-    @Req() req: Request,
-    @Res() res: Response,
-    @GetUser() { id }: User,
-  ) {
-    const user = await this.viewService.getUser(id);
-    const serverSideProps = { user };
-
-    await this.viewService.handler(req, res, {
-      data: serverSideProps,
-    });
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @UseFilters(ViewAuthFilter)
-  @Get('orders')
-  public async renderOrdersPage(@Req() req: Request, @Res() res: Response) {
-    console.log(req.user);
-
+  public async renderProfilePage(@Req() req: Request, @Res() res: Response) {
     await this.viewService.handler(req, res);
   }
 

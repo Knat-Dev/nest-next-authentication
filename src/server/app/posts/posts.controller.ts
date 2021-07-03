@@ -10,7 +10,8 @@ import {
 } from '@nestjs/common';
 import { GetUser } from '../auth/get-user.decorator';
 import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
-import { User } from '../users/user.entity';
+import { RoleGuard } from '../auth/role.guard';
+import { User, UserRole } from '../users/user.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsService } from './posts.service';
@@ -19,7 +20,7 @@ import { PostsService } from './posts.service';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RoleGuard(UserRole.Admin))
   @Post()
   create(@Body() createPostDto: CreatePostDto, @GetUser() user: User) {
     return this.postsService.create(createPostDto, user);
@@ -45,7 +46,7 @@ export class PostsController {
     return this.postsService.update(+id, updatePostDto, user);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RoleGuard(UserRole.Admin))
   @Delete(':id')
   remove(@Param('id') id: string, @GetUser() user: User) {
     return this.postsService.remove(+id, user);

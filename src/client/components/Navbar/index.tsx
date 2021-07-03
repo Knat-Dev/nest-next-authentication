@@ -1,13 +1,15 @@
-import { Box, Button, Flex, IconButton, Tooltip } from '@chakra-ui/react';
+import { Box, Button, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/dist/client/router';
 import NextLink from 'next/link';
 import React, { FC, useState } from 'react';
-import { RiProfileLine } from 'react-icons/ri';
+import { RiAddFill, RiProfileLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { User } from '../../../server/common/types/user';
 import { logout } from '../../app/slices/authSlice';
 import { AppDispatch } from '../../app/store';
+import { UserRole } from '../../types.d';
 import { Container } from '../Container';
+import { NavbarIconButton } from '../NavbarIconButton';
 
 interface Props {
   user: User | null;
@@ -33,32 +35,23 @@ export const Navbar: FC<Props> = ({ user }) => {
             </NextLink>
             <Box>
               {user ? (
-                <Flex gridGap={2}>
+                <Flex gridGap={2} align="center">
+                  {user.role === UserRole.Admin && (
+                    <NavbarIconButton
+                      tooltipLabel="Create a new post.."
+                      icon={<RiAddFill />}
+                    />
+                  )}
                   <NextLink href="/profile">
                     <a>
-                      <Tooltip
-                        label="User Profile"
-                        background="purple.800"
-                        borderRadius={0}
-                        borderTop="4px solid"
-                        borderTopColor="purple.600"
-                      >
-                        <IconButton
-                          p={0}
-                          minW="32px"
-                          w="32px"
-                          h="32px"
-                          borderRadius="50%"
-                          background="purple.700"
-                          _hover={{ color: 'purple.700', background: 'white' }}
-                          aria-label="user-profile"
-                          icon={<RiProfileLine />}
-                        />
-                      </Tooltip>
+                      <NavbarIconButton
+                        tooltipLabel="User Profile"
+                        icon={<RiProfileLine />}
+                      />
                     </a>
                   </NextLink>
                   <Button
-                    size="sm"
+                    size="xs"
                     variant="outline"
                     background="purple.700"
                     _hover={{ color: 'purple.700', background: 'white' }}

@@ -19,6 +19,7 @@
     "jsx": "preserve"
   },
   "include": [
+    "src\\client\\types.d.ts",
     "next-env.d.ts",
     "next.config.js",
     "app",

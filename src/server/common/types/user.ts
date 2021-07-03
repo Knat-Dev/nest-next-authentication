@@ -1,5 +1,4 @@
 import { UserRole } from "src/server/app/users/user.entity";
-
 export type Provider = 'google' | 'cognito';
 
 export interface User {

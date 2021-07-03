@@ -1,5 +1,5 @@
 # NestJS + NextJS Starter
-## Authentication included!
+## Role Based Authentication is also included in this fork!
 
 [Use this template](https://github.com/Knat-Dev/nest-next-authentication/generate)
 

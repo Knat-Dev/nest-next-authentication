@@ -6,18 +6,12 @@ import { RouterModule, Routes } from 'nest-router';
 import { ConsoleModule } from 'nestjs-console';
 import { join } from 'path';
 import { ApiModule } from './api/api.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { GoogleOauthModule } from './auth/google/google-oauth.module';
+import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
 
 const routes: Routes = [
-  // {
-  //   // Next.JS SSR
-  //   path: '',
-  //   module: ViewModule,
-  // },
   {
     // RESTful API
     path: '/api/v1',
@@ -26,6 +20,7 @@ const routes: Routes = [
       { path: '/users', module: UsersModule },
       { path: '/auth', module: AuthModule },
       { path: '/google', module: GoogleOauthModule },
+      { path: '/posts', module: PostsModule },
     ],
   },
 ];
@@ -56,9 +51,10 @@ const routes: Routes = [
     ConsoleModule,
     AuthModule,
     UsersModule,
+    PostsModule,
     // ViewModule, // order matters, GET '/*' should be last, so it renders next.js not found page
   ],
-  providers: [AppService],
-  controllers: [AppController],
+  providers: [],
+  controllers: [],
 })
 export class AppModule {}

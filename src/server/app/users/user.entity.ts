@@ -1,14 +1,24 @@
 import { Provider } from 'src/server/common/types/user';
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn
 } from 'typeorm';
+import { Post } from '../posts/post.entity';
+
+export enum UserRole {
+  Admin = 'admin',
+  User = 'user',
+}
 
 @Entity()
-export class User {
+@Unique(['username'])
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,14 +29,24 @@ export class User {
   providerId: string;
 
   @Column({ nullable: false })
-  username: string;
+  email: string;
 
   @Column({ nullable: false })
-  name: string;
+  username: string;
 
-  @CreateDateColumn({ type: 'timestamptz' })
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.User,
+  })
+  role: UserRole;
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
+
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   created_at: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz' })
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
   updated_at: Date;
 }

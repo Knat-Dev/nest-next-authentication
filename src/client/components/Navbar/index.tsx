@@ -25,11 +25,12 @@ export const Navbar: FC<Props> = ({ user }) => {
 
   return (
     <>
-      
       <Flex color="white" bg="purple.700" h="48px" p={4} align="center">
         <Container>
           <Flex mx="auto" w="1000px" justify="space-between">
-            <NextLink href="/app">App Name</NextLink>
+            <NextLink href="/app">
+              <a>App Name</a>
+            </NextLink>
             <Box>
               {user ? (
                 <Flex gridGap={2}>

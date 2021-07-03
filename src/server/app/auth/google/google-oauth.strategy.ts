@@ -1,7 +1,7 @@
-import { PassportStrategy } from '@nestjs/passport';
-import { Profile, Strategy } from 'passport-google-oauth20';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { PassportStrategy } from '@nestjs/passport';
+import { Profile, Strategy } from 'passport-google-oauth20';
 import { UsersService } from '../../users/users.service';
 
 @Injectable()
@@ -30,8 +30,9 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, 'google') {
       user = await this.usersService.create({
         provider: 'google',
         providerId: id,
-        name: name.givenName,
-        username: emails[0].value,
+        username:
+          name.givenName + (name.familyName ? ' ' + name.familyName : ''),
+        email: emails[0].value,
       });
     }
 

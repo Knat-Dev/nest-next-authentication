@@ -6,7 +6,7 @@
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "yarn",
-      "runtimeArgs": ["start:debug"],
+      "runtimeArgs": ["start:dev"],
       "cwd": "${workspaceRoot}",
       "protocol": "inspector",
       "internalConsoleOptions": "openOnSessionStart",
